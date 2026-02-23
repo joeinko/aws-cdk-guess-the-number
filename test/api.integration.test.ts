@@ -32,23 +32,25 @@ describe('Guess The Number API', () => {
   });
 
   it('POST /make-guess returns 400 for a completed game', async () => {
-    // Start a fresh game and brute-force the correct answer
     const startResponse = await api.post('start-game');
     const newGameId = startResponse.data.gameId;
 
-    let found = false;
-    for (let guess = 1; guess <= 100 && !found; guess++) {
+    // Binary search — finds the answer in at most 7 requests
+    let low = 1, high = 100;
+    while (low <= high) {
+      const guess = Math.floor((low + high) / 2);
       const response = await api.post('make-guess', { gameId: newGameId, guess });
-      if (response.data.message === "Correct! You've guessed the number.") {
-        found = true;
-      }
+      const message: string = response.data.message;
+      if (message === "Correct! You've guessed the number.") break;
+      if (message === 'Too low. Try again!') low = guess + 1;
+      else high = guess - 1;
     }
 
-    // Now the game is completed — any further guess should return 400
+    // Game is now completed — any further guess should return 400
     const response = await api.post('make-guess', { gameId: newGameId, guess: 50 });
     expect(response.status).toBe(400);
     expect(response.data.message).toContain('already completed');
-  });
+  }, 30000);
 
   it('POST /make-guess returns 404 for a non-existent gameId', async () => {
     const response = await api.post('make-guess', { gameId: 'non-existent-id', guess: 50 });
