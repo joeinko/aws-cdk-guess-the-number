@@ -3,7 +3,25 @@ import { getGame, updateGame } from "./src/gameRepository";
 import { evaluateGuess, getResponseMessage } from "./src/gameService";
 
 export const handler = async (event: any) => {
-  const { gameId, guess } = JSON.parse(event.body);
+  let gameId: string, guess: number;
+
+  try {
+    const body = JSON.parse(event.body);
+    gameId = body.gameId;
+    guess = body.guess;
+  } catch {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Invalid request body. Expected JSON with gameId (string) and guess (number).' }),
+    };
+  }
+
+  if (!gameId || !Number.isInteger(guess)) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Missing required fields: gameId (string) and guess (number).' }),
+    };
+  }
 
   const game = await getGame(gameId);
   if (!game) {
