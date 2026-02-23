@@ -27,14 +27,17 @@ const completeGame = async (gameId: string): Promise<void> => {
 describe('Guess The Number API', () => {
   let gameId: string;
 
+  beforeAll(async () => {
+    const response = await api.post('start-game');
+    gameId = response.data.gameId;
+  });
+
   it('POST /start-game starts a new game and returns a gameId', async () => {
     const response = await api.post('start-game');
 
     expect(response.status).toBe(201);
     expect(response.data.gameId).toBeDefined();
     expect(response.data.message).toBe(`Game started! Make a guess between ${MIN_GUESS} and ${MAX_GUESS}.`);
-
-    gameId = response.data.gameId;
   });
 
   it('POST /make-guess returns TOO_LOW or TOO_HIGH for a non-correct guess', async () => {
