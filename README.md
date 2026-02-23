@@ -22,3 +22,4 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * Give minimal privileges to the IAM User/Role used by the Lambda function
 * Clean stale games with ttl param
 * Configure billing accordingly for production depending on expected usage
+* Add proper integration tests including unhappy paths and unit tests
