@@ -1,6 +1,7 @@
 import { GameStatus } from "./src/apiTypes";
 import { getGame, updateGame } from "./src/gameRepository";
 import { evaluateGuess, getResponseMessage } from "./src/gameService";
+import {MAX_GUESS, MIN_GUESS} from "./src/gameConfig";
 
 export const handler = async (event: any) => {
   let gameId: string, guess: number;

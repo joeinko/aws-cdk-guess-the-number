@@ -1,9 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Game, GameStatus, GuessResult } from './apiTypes';
+import {MAX_GUESS, MIN_GUESS} from "./gameConfig";
+
+const getRandomTarget = (): number => Math.floor(Math.random() * (MAX_GUESS - MIN_GUESS + 1)) + MIN_GUESS;
 
 export const createNewGame = (): Game => ({
   id: uuidv4(),
-  targetNumber: Math.floor(Math.random() * 100) + 1,
+  targetNumber: getRandomTarget(),
   attempts: 0,
   status: GameStatus.IN_PROGRESS,
   createdAt: new Date(),

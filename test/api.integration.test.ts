@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import {MAX_GUESS, MIN_GUESS} from "../lambda/src/gameConfig";
 
 const API_URL = process.env.API_URL;
 
@@ -12,7 +13,7 @@ const api: AxiosInstance = axios.create({
 });
 
 const completeGame = async (gameId: string): Promise<void> => {
-  let low = 1, high = 100;
+  let low = MIN_GUESS, high = MAX_GUESS;
   while (low <= high) {
     const guess = Math.floor((low + high) / 2);
     const response = await api.post('make-guess', { gameId, guess });
@@ -31,7 +32,7 @@ describe('Guess The Number API', () => {
 
     expect(response.status).toBe(200);
     expect(response.data.gameId).toBeDefined();
-    expect(response.data.message).toBe('Game started! Make a guess between 1 and 100.');
+    expect(response.data.message).toBe(`Game started! Make a guess between ${MIN_GUESS} and ${MAX_GUESS}.`);
 
     gameId = response.data.gameId;
   });

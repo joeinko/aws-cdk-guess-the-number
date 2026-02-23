@@ -1,5 +1,6 @@
 import { createGame } from "./src/gameRepository";
 import { createNewGame } from "./src/gameService";
+import {MAX_GUESS, MIN_GUESS} from "./src/gameConfig";
 
 export const handler = async (_event: any) => {
   const game = createNewGame();
@@ -10,7 +11,7 @@ export const handler = async (_event: any) => {
     statusCode: 201,
     body: JSON.stringify({
       gameId: game.id,
-      message: 'Game started! Make a guess between 1 and 100.',
+      message: `Game started! Make a guess between ${MIN_GUESS} and ${MAX_GUESS}.`,
     }),
   };
 };
