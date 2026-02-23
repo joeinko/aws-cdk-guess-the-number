@@ -45,5 +45,10 @@ export class GuessTheNumberStack extends cdk.Stack {
     
     api.root.addResource('start-game').addMethod('POST', new apigateway.LambdaIntegration(startGameLambda));
     api.root.addResource('make-guess').addMethod('POST', new apigateway.LambdaIntegration(makeGuessLambda));
+
+    new cdk.CfnOutput(this, 'ApiUrl', {
+      value: api.url,
+      description: 'Base URL of the Guess The Number API',
+    });
   }
 }

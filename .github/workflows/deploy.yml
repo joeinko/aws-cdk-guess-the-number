@@ -37,3 +37,18 @@ jobs:
 
       - name: CDK Deploy
         run: npx cdk deploy --require-approval never
+
+      - name: Get API URL
+        id: get-api-url
+        run: |
+          API_URL=$(aws cloudformation describe-stacks \
+            --stack-name GuessTheNumberStack \
+            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
+            --output text)
+          echo "api_url=$API_URL" >> $GITHUB_OUTPUT
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          API_URL: ${{ steps.get-api-url.outputs.api_url }}
+

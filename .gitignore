@@ -1,5 +1,7 @@
 *.js
 !jest.config.js
+!jest.integration.config.js
+!test/__mocks__/*.js
 *.d.ts
 node_modules
 
