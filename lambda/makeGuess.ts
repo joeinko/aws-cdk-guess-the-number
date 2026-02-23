@@ -24,6 +24,13 @@ export const handler = async (event: any) => {
     };
   }
 
+  if (guess < MIN_GUESS || guess > MAX_GUESS) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: `Guess must be an integer between ${MIN_GUESS} and ${MAX_GUESS}.` }),
+    };
+  }
+
   const game = await getGame(gameId);
   if (!game) {
     return {
