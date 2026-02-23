@@ -35,7 +35,6 @@ describe('Guess The Number API', () => {
     const startResponse = await api.post('start-game');
     const newGameId = startResponse.data.gameId;
 
-    // Binary search — finds the answer in at most 7 requests
     let low = 1, high = 100;
     while (low <= high) {
       const guess = Math.floor((low + high) / 2);
@@ -46,9 +45,8 @@ describe('Guess The Number API', () => {
       else high = guess - 1;
     }
 
-    // Game is now completed — any further guess should return 400
     const response = await api.post('make-guess', { gameId: newGameId, guess: 50 });
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(409);
     expect(response.data.message).toContain('already completed');
   }, 30000);
 

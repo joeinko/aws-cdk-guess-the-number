@@ -15,7 +15,7 @@ export const handler = async (event: any) => {
 
   if (game.status === GameStatus.COMPLETED) {
     return {
-      statusCode: 400,
+      statusCode: 409,
       body: JSON.stringify({ message: 'This game is already completed. To play again, start a new game.' }),
     };
   }
