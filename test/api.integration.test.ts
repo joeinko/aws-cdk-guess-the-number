@@ -11,6 +11,18 @@ const api: AxiosInstance = axios.create({
   validateStatus: () => true, // don't throw on non-2xx so we can assert status codes ourselves
 });
 
+const completeGame = async (gameId: string): Promise<void> => {
+  let low = 1, high = 100;
+  while (low <= high) {
+    const guess = Math.floor((low + high) / 2);
+    const response = await api.post('make-guess', { gameId, guess });
+    const message: string = response.data.message;
+    if (message === "Correct! You've guessed the number.") break;
+    if (message === 'Too low. Try again!') low = guess + 1;
+    else high = guess - 1;
+  }
+};
+
 describe('Guess The Number API', () => {
   let gameId: string;
 
@@ -35,15 +47,7 @@ describe('Guess The Number API', () => {
     const startResponse = await api.post('start-game');
     const newGameId = startResponse.data.gameId;
 
-    let low = 1, high = 100;
-    while (low <= high) {
-      const guess = Math.floor((low + high) / 2);
-      const response = await api.post('make-guess', { gameId: newGameId, guess });
-      const message: string = response.data.message;
-      if (message === "Correct! You've guessed the number.") break;
-      if (message === 'Too low. Try again!') low = guess + 1;
-      else high = guess - 1;
-    }
+    await completeGame(newGameId);
 
     const response = await api.post('make-guess', { gameId: newGameId, guess: 50 });
     expect(response.status).toBe(409);
