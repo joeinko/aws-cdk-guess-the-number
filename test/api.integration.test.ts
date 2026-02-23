@@ -43,7 +43,7 @@ describe('Guess The Number API', () => {
     expect(['Too low. Try again!', 'Too high. Try again!', "Correct! You've guessed the number."]).toContain(response.data.message);
   });
 
-  it('POST /make-guess returns 400 for a completed game', async () => {
+  it('POST /make-guess returns 409 for a completed game', async () => {
     const startResponse = await api.post('start-game');
     const newGameId = startResponse.data.gameId;
 
