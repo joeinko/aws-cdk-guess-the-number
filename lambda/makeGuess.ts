@@ -20,7 +20,7 @@ export const handler = async (event: any) => {
   if (!gameId || !Number.isInteger(guess)) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Missing required fields: gameId (string) and guess (number).' }),
+      body: JSON.stringify({ message: 'Missing required fields: gameId (string) or guess (number).' }),
     };
   }
 
