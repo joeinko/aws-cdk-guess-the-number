@@ -32,6 +32,7 @@ describe('Guess The Number API', () => {
     gameId = response.data.gameId;
   });
 
+  //
   it('POST /start-game starts a new game and returns a gameId', async () => {
     const response = await api.post('start-game');
 
