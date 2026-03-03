@@ -36,7 +36,7 @@ export class GuessTheNumberStack extends cdk.Stack {
     const startGameLambda = new NodejsFunction(this, 'StartGameFunction', lambdaProps('startGame.ts'));
     const makeGuessLambda = new NodejsFunction(this, 'MakeGuessFunction', lambdaProps('makeGuess.ts'));
 
-    dbTable.grantReadWriteData(startGameLambda);
+    // dbTable.grantReadWriteData(startGameLambda);
     dbTable.grantReadWriteData(makeGuessLambda);
 
     const api = new apigateway.RestApi(this, 'GuessTheNumberApi', {
